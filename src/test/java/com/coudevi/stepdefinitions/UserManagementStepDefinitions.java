@@ -11,11 +11,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import net.serenitybdd.screenplay.actions.Click;
 import net.serenitybdd.screenplay.waits.WaitUntil;
-import java.time.Duration;
-import net.serenitybdd.screenplay.actions.Click;
-import net.serenitybdd.screenplay.waits.WaitUntil;
-
-import java.time.Duration;
 
 import static net.serenitybdd.screenplay.actors.OnStage.theActorInTheSpotlight;
 import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
@@ -24,6 +19,8 @@ import static org.hamcrest.Matchers.is;
 
 public class UserManagementStepDefinitions {
 
+    // --- Steps del Feature 5 (Edición y Promoción) ---
+
     @When("busca al usuario {string}")
     public void busca_al_usuario(String username) {
         theActorInTheSpotlight().attemptsTo(
@@ -31,18 +28,20 @@ public class UserManagementStepDefinitions {
         );
     }
 
+    // Asumimos que este Step se mantiene vacío
     @When("hace clic en el botón editar del usuario encontrado")
     public void hace_clic_en_el_botón_editar_del_usuario_encontrado() {
-        // Este paso se integró en la Task EditarRolDeUsuario para mayor coherencia
-        // Si necesitas este step vacío, simplemente déjalo sin lógica compleja aquí:
-        // theActorInTheSpotlight().should(seeThat("el botón de editar es visible", is(true)));
+        // Lógica movida a la Task EditarRolDeUsuario
     }
 
     @When("actualiza el rol del usuario seleccionando {string}")
     public void actualiza_el_rol_del_usuario_seleccionando(String newRole) {
-        // Usamos el username fijo "caleb.qa" ya que se busca justo antes en el Feature 5
+        // Usamos el username consistente para la Task de Edición (caleb.adm o el que se usa en Feature 3)
+        // **RECUERDA CORREGIR ESTE VALOR EN TU FEATURE 5 Y EN EL CÓDIGO SI ES NECESARIO**
+        String usernameDeEdicion = "caleb.idk";
+
         theActorInTheSpotlight().attemptsTo(
-                EditarRolDeUsuario.yCambiarRolA("caleb.qa", newRole)
+                EditarRolDeUsuario.yCambiarRolA(usernameDeEdicion, newRole)
         );
     }
 
@@ -53,26 +52,28 @@ public class UserManagementStepDefinitions {
         );
     }
 
+    // CORRECCIÓN CRÍTICA: Aseguramos que la tabla se refresque y luego validamos.
     @Then("el usuario {string} ahora debería tener el rol {string}")
     public void el_usuario_ahora_debería_tener_el_rol(String username, String expectedRole) {
-        // Reutiliza la Question de validación
+        theActorInTheSpotlight().attemptsTo(
+                // 1. Forzar una búsqueda para actualizar la tabla y mostrar el rol cambiado
+                BuscarUsuario.porUsername(username)
+        );
+
         theActorInTheSpotlight().should(
+                // 2. Validar el rol
                 seeThat(RolUsuarioEsCorrecto.paraElUsuario(username, expectedRole), is(true))
         );
     }
 
 
+    // --- Steps del Feature 3 (Creación ESS) ---
+
     @And("navega al módulo de Gestión de Usuarios en la sección Admin")
     public void navegaAlModuloDeGestionDeUsuariosEnLaSeccionAdmin() {
         theActorInTheSpotlight().attemptsTo(
-                // Clic en el menú Admin (sidebar)
                 Click.on(AdminUsersPage.ADMIN_MENU_LINK),
-
-                // Espera de 5s para que carguen los elementos, esperando la tabla de usuarios
                 WaitUntil.the(AdminUsersPage.ADD_BUTTON, isClickable()).forNoMoreThan(5).seconds()
-
-                // Nota: Si el clic en Admin ya nos lleva a la pantalla de System Users,
-                // simplemente esperamos un elemento de esa pantalla (como el botón Add) y terminamos.
         );
     }
 
@@ -86,20 +87,16 @@ public class UserManagementStepDefinitions {
     @And("registra un nuevo usuario con los siguientes datos:")
     public void registraUnNuevoUsuarioConLosSiguientesDatos(DataTable userData) {
         theActorInTheSpotlight().attemptsTo(
-                // La Task recibe directamente los nuevos datos: Caleb Test QA, caleb.qa, clave123
                 CrearUsuarioDeSistema.conDatos(userData.asMaps())
         );
     }
 
+    // CORRECCIÓN: El WaitUntil aquí ya es suficiente sincronización post-guardado.
     @And("guarda el usuario en el sistema")
     public void guardaElUsuarioEnElSistema() {
         theActorInTheSpotlight().attemptsTo(
-                // 1. Click en Guardar (Esto inicia la acción de guardado)
                 Click.on(AdminUsersPage.SAVE_BUTTON),
-
-                // 2. ESPERA DINÁMICA (POST-GUARDADO) - Usa la sintaxis forNoMoreThan()
-                // Esperamos a que el botón Add (un elemento conocido de la página recargada)
-                // sea clickeable. Esto confirma que el guardado finalizó y la tabla cargó.
+                // Espera dinámica para que la lista cargue después del guardado
                 WaitUntil.the(AdminUsersPage.ADD_BUTTON, isClickable()).forNoMoreThan(10).seconds()
         );
     }
@@ -107,7 +104,6 @@ public class UserManagementStepDefinitions {
     @Then("el usuario {string} debería existir en la lista con el rol {string}")
     public void elUsuarioDeberiaExistirEnLaListaConElRol(String username, String expectedRole) {
         theActorInTheSpotlight().should(
-                // La Question valida que "caleb.qa" tiene el rol "ESS"
                 seeThat(RolUsuarioEsCorrecto.paraElUsuario(username, expectedRole), is(true))
         );
     }

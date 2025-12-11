@@ -27,6 +27,6 @@ public class RolUsuarioEsCorrecto implements Question<Boolean> {
         String actualRole = Text.of(AdminUsersPage.USER_ROLE_IN_TABLE(username))
                 .answeredBy(actor);
 
-        return actualRole.equals(expectedRole);
+        return actualRole.trim().equals(expectedRole);
     }
 }

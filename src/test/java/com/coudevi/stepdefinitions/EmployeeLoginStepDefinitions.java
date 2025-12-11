@@ -5,6 +5,7 @@ import com.coudevi.questions.MensajeErrorLoginEsVisible;
 import com.coudevi.questions.OpcionMenuEsVisible;
 import com.coudevi.tasks.IrALaListaDeEmpleados;
 import com.coudevi.tasks.LoginConCredenciales;
+import com.coudevi.ui.MenuLateral;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -13,9 +14,12 @@ import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actions.Open;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
+import net.serenitybdd.screenplay.waits.WaitUntil;
 
 import static com.coudevi.util.Configuration.getUrlBase;
 import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
+import static net.serenitybdd.screenplay.actors.OnStage.theActorInTheSpotlight;
+import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isVisible;
 import static org.hamcrest.Matchers.is;
 
 public class EmployeeLoginStepDefinitions {
@@ -127,11 +131,14 @@ public class EmployeeLoginStepDefinitions {
 
     @Then("la opción {string} DEBERÍA ser visible en el menú lateral")
     public void la_opcion_deberia_ser_visible_en_el_menu_lateral(String menuOption) {
-        admin.should(
-                // Aquí también se usa OpcionMenuEsVisible
-                seeThat("la opción " + menuOption + " SÍ es visible",
-                        OpcionMenuEsVisible.laOpcion(menuOption), is(true))
+        theActorInTheSpotlight().attemptsTo(
+                // Esperamos explícitamente a que el Target "Admin" sea visible antes de preguntar
+                WaitUntil.the(MenuLateral.OPCION_DE_MENU.of(menuOption), isVisible()).forNoMoreThan(5).seconds()
+        );
+
+        theActorInTheSpotlight().should(
+                // Ejecutamos la aserción
+                seeThat(OpcionMenuEsVisible.laOpcion(menuOption), is(true))
         );
     }
-
 }

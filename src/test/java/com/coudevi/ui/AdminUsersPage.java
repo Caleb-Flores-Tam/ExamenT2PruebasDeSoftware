@@ -7,14 +7,14 @@ public class AdminUsersPage {
 
     // Nuevos Selectores para Búsqueda (Feature 5)
     public static final Target USERNAME_SEARCH_INPUT = Target.the("Input Username de busqueda")
-            .located(By.xpath("(//div[@class='oxd-input-group oxd-input-field-bottom-space'])[1]//input"));
+            .located(By.xpath("//label[text()='Username']/parent::div/following-sibling::div/input"));
     public static final Target SEARCH_BUTTON = Target.the("Boton Search").located(By.xpath("//button[@type='submit']"));
 
     // Selector de Edición (Feature 5)
     public static final Target EDIT_ICON_BY_USERNAME(String username) {
-        // Busca el ícono de lápiz en la fila del usuario especificado
+        // Buscar el botón de edición en la fila del username dinámico
         return Target.the("Icono de editar para el usuario " + username)
-                .located(By.xpath("//div[text()='" + username + "']/ancestor::div[@role='row']//i[@class='oxd-icon bi-pencil-fill']"));
+                .located(By.xpath("//div[text()='" + username + "']/ancestor::div[@role='row']//button/i[@class='oxd-icon bi-pencil-fill']/parent::button"));
     }
 
     public static final Target EMPLOYEE_SUGGESTION(String employeeName) {

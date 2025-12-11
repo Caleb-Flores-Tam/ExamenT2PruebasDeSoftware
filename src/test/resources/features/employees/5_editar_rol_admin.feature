@@ -1,5 +1,5 @@
 # language: en
-@ui @gestion-usuarios
+@ui @gestion-usuarios @promover-a-admin
 Feature: Elevar Rol de Usuario a Administrador
   As a System Administrator
   I want to modify a system user's role
@@ -11,8 +11,8 @@ Feature: Elevar Rol de Usuario a Administrador
 
   @promover-a-admin
   Scenario: Cambiar el rol del usuario de ESS a Administrador
-    When busca al usuario "caleb.floresCibertec"
+    When busca al usuario "caleb.idk"
     And hace clic en el botón editar del usuario encontrado
     And actualiza el rol del usuario seleccionando "Admin"
     And guarda los cambios del usuario
-    Then el usuario "caleb.floresCibertec" ahora debería tener el rol "Admin"
+    Then el usuario "caleb.idk" ahora debería tener el rol "Admin"

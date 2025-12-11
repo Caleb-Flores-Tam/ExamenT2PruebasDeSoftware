@@ -12,6 +12,6 @@ Feature: Validar Acceso Total para Nuevo Administrador
   Scenario: Iniciar sesión con el usuario actualizado y verificar acceso total
     When ingresa las credenciales de acceso:
       | user     | password     |
-      | caleb.floresCibertec | clave123    |
+      | caleb.idk | clave123    |
     Then el Dashboard debería mostrarse correctamente
     And la opción "Admin" DEBERÍA ser visible en el menú lateral

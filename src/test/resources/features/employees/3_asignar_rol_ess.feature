@@ -16,8 +16,8 @@ Feature: Asignar Rol Employee Self Service (ESS)
     # Completar formulario con Rol ESS, Empleado, Usuario, Password
     And registra un nuevo usuario con los siguientes datos:
       | userRole | employeeName  | status  | username | password     |
-      | ESS      | caleb        | Enabled | caleb.floresCibertec | clave123     |
+      | ESS      | caleb        | Enabled | caleb.idk | clave123     |
     # Hacer clic en Save
     And guarda el usuario en el sistema
     # Validar que el usuario aparece en la lista con rol ESS
-    Then el usuario "caleb.floresCibertec" debería existir en la lista con el rol "ESS"
+    Then el usuario "caleb.idk" debería existir en la lista con el rol "ESS"

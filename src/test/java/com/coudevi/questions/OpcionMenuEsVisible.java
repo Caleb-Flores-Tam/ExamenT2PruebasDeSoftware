@@ -1,5 +1,6 @@
 package com.coudevi.questions;
 
+import com.coudevi.ui.AdminUsersPage;
 import com.coudevi.ui.MenuLateral; // Importar el Target que creaste
 
 import net.serenitybdd.screenplay.Actor;
@@ -24,8 +25,7 @@ public class OpcionMenuEsVisible implements Question<Boolean> {
     // Lógica de la Question: pregunta si el Target es visible
     @Override
     public Boolean answeredBy(Actor actor) {
-        // Si estás usando MenuLateral.OPCION_DE_MENU, debe ser un Target con placeholder:
-        return Visibility.of(MenuLateral.OPCION_DE_MENU.of(opcionMenu))
-                .answeredBy(actor);
+        // Usa el Target de MenuLateral con el parámetro:
+        return Visibility.of(MenuLateral.OPCION_DE_MENU.of(opcionMenu)).answeredBy(actor);
     }
 }

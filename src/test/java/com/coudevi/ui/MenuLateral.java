@@ -10,8 +10,14 @@ public class MenuLateral {
     // Usamos un placeholder {0} que será reemplazado por la opción que buscamos ("Admin", "PIM", "Leave", etc.).
     //public static final Target OPCION_DE_MENU = Target.the("la opción de menú llamada '{0}'")
             //.located(By.xpath("//*[@class='oxd-main-menu-item-wrapper']/a/span[text()='{0}']"));
-    public static final Target OPCION_DE_MENU = Target.the("Opcion de menu")
+    public static final Target OPCION_ADMIN = Target.the("Opcion Admin del menu").located(By.xpath("//span[contains(text(), 'Admin')]"));
+    public static final Target OPCION_DE_MENU(String optionName) {
+        return Target.the("Opción de menú " + optionName)
+                .located(By.xpath("//span[text()='" + optionName + "']"));
+    }
+    public static final Target OPCION_DE_MENU = Target.the("Cualquier opción del menú lateral")
             .locatedBy("//span[text()='{0}']");
+
     private MenuLateral() {
         // Clase de utilidades estática
     }
