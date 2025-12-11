@@ -24,7 +24,7 @@ public class OpcionMenuEsVisible implements Question<Boolean> {
     // Lógica de la Question: pregunta si el Target es visible
     @Override
     public Boolean answeredBy(Actor actor) {
-        // Reemplaza el placeholder {0} en el Target con la opción de menú provista
+        // Si estás usando MenuLateral.OPCION_DE_MENU, debe ser un Target con placeholder:
         return Visibility.of(MenuLateral.OPCION_DE_MENU.of(opcionMenu))
                 .answeredBy(actor);
     }

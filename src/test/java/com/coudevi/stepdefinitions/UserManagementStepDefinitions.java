@@ -11,6 +11,11 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import net.serenitybdd.screenplay.actions.Click;
 import net.serenitybdd.screenplay.waits.WaitUntil;
+import java.time.Duration;
+import net.serenitybdd.screenplay.actions.Click;
+import net.serenitybdd.screenplay.waits.WaitUntil;
+
+import java.time.Duration;
 
 import static net.serenitybdd.screenplay.actors.OnStage.theActorInTheSpotlight;
 import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
@@ -89,7 +94,13 @@ public class UserManagementStepDefinitions {
     @And("guarda el usuario en el sistema")
     public void guardaElUsuarioEnElSistema() {
         theActorInTheSpotlight().attemptsTo(
-                Click.on(AdminUsersPage.SAVE_BUTTON)
+                // 1. Click en Guardar (Esto inicia la acción de guardado)
+                Click.on(AdminUsersPage.SAVE_BUTTON),
+
+                // 2. ESPERA DINÁMICA (POST-GUARDADO) - Usa la sintaxis forNoMoreThan()
+                // Esperamos a que el botón Add (un elemento conocido de la página recargada)
+                // sea clickeable. Esto confirma que el guardado finalizó y la tabla cargó.
+                WaitUntil.the(AdminUsersPage.ADD_BUTTON, isClickable()).forNoMoreThan(10).seconds()
         );
     }
 

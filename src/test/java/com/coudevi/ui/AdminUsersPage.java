@@ -46,17 +46,21 @@ public class AdminUsersPage {
     public static final Target EMPLOYEE_NAME_INPUT = Target.the("Input Employee Name").located(By.xpath("//input[@placeholder='Type for hints...']"));
     public static final Target STATUS_DROPDOWN = Target.the("Dropdown Status").located(By.xpath("(//div[@class='oxd-select-text-input'])[2]"));
 
-    // Selector para Username: Busca la etiqueta 'Username' y luego el input dentro de su contenedor.
     public static final Target USERNAME_INPUT = Target.the("Input Username")
-            .located(By.xpath("//label[text()='Username']/ancestor::div[@class='oxd-input-group oxd-input-field-bottom-space']//input"));
+            // Busca la etiqueta 'Username'
+            .located(By.xpath("//label[text()='Username']/parent::div/following-sibling::div/input"));
+    // Explicación:
+    // 1. //label[text()='Username'] : Encuentra la etiqueta.
+    // 2. /parent::div : Sube al <div class="oxd-input-group__label-wrapper">.
+    // 3. /following-sibling::div : Va al hermano siguiente (el contenedor del input).
+    // 4. //input : Encuentra el input dentro de ese hermano.
 
     // Selector para Password: Usa la misma lógica del label
     public static final Target PASSWORD_INPUT = Target.the("Input Password")
-            .located(By.xpath("//label[text()='Password']/ancestor::div[@class='oxd-input-group oxd-input-field-bottom-space']//input"));
+            .located(By.xpath("//label[text()='Password']/parent::div/following-sibling::div/input"));
 
-    // Selector para Confirm Password: Usa la misma lógica del label
     public static final Target CONFIRM_PASSWORD_INPUT = Target.the("Input Confirm Password")
-            .located(By.xpath("//label[text()='Confirm Password']/ancestor::div[@class='oxd-input-group oxd-input-field-bottom-space']//input"));
+            .located(By.xpath("//label[text()='Confirm Password']/parent::div/following-sibling::div/input"));
 
     // Selector para Botón Save
     public static final Target SAVE_BUTTON = Target.the("Boton Save").located(By.xpath("//button[@type='submit']"));
