@@ -4,14 +4,14 @@ import com.coudevi.ui.AdminUsersPage;
 import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
-import net.serenitybdd.screenplay.actions.*;
+import net.serenitybdd.screenplay.actions.Click;
+import net.serenitybdd.screenplay.actions.Enter;
 import net.serenitybdd.screenplay.waits.WaitUntil;
-
-import org.openqa.selenium.Keys;
 
 import java.util.List;
 import java.util.Map;
-import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isVisible;
+import static net.serenitybdd.screenplay.Tasks.instrumented;
+import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isClickable;
 import static org.openqa.selenium.By.xpath;
 
 public class CrearUsuarioDeSistema implements Task {
@@ -23,11 +23,11 @@ public class CrearUsuarioDeSistema implements Task {
     }
 
     public static CrearUsuarioDeSistema conDatos(List<Map<String, String>> userData) {
-        return new CrearUsuarioDeSistema(userData);
+        return instrumented(CrearUsuarioDeSistema.class, userData);
     }
 
     @Override
-    @Step("{0} registra un nuevo usuario de sistema")
+    @Step("{0} registra un nuevo usuario de sistema con rol ESS")
     public <T extends Actor> void performAs(T actor) {
         Map<String, String> data = userData.get(0);
         String role = data.get("userRole");
@@ -41,12 +41,12 @@ public class CrearUsuarioDeSistema implements Task {
                 Click.on(AdminUsersPage.USER_ROLE_DROPDOWN),
                 Click.on(xpath("//*[contains(text(), '" + role + "')]")),
 
-                // 2. Ingresar Nombre de Empleado (Autocomplete)
+                // 2. Ingresar Nombre de Empleado (Autocompletado)
                 Enter.theValue(employeeName).into(AdminUsersPage.EMPLOYEE_NAME_INPUT),
-                // Espera a que la lista de sugerencias aparezca
-                WaitUntil.the(xpath("//*[contains(text(), '" + employeeName + "')]"), isVisible()).forNoMoreThan(10).seconds(),
-                // Selecciona el primer resultado
-                SendKeys.of(Keys.ARROW_DOWN, Keys.ENTER).into(AdminUsersPage.EMPLOYEE_NAME_INPUT),
+
+                // Espera CRÍTICA y clic directo en la sugerencia
+                WaitUntil.the(AdminUsersPage.EMPLOYEE_SUGGESTION(employeeName), isClickable()).forNoMoreThan(10).seconds(),
+                Click.on(AdminUsersPage.EMPLOYEE_SUGGESTION(employeeName)),
 
                 // 3. Seleccionar Estado (Dropdown)
                 Click.on(AdminUsersPage.STATUS_DROPDOWN),
