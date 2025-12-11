@@ -83,26 +83,19 @@ public class EmployeeLoginStepDefinitions {
         );
     }
 
-    // --- PASOS PARA FEATURES 3, 5 (LOGIN REUTILIZABLE) ---
-
     @Given("que el administrador genérico ha iniciado sesión con éxito")
     public void que_el_administrador_generico_ha_iniciado_sesion_con_exito() {
-        // Reutiliza el código del Background de Employees, que hace el login Admin/admin123
         queElAdministradorHaIniciadoSesionEnOrangeHRM();
     }
 
-    // --- PASOS PARA FEATURES 4, 6 (LOGIN CON DATATABLE) ---
-
-    // Aquí el Actor ya está definido en @Before o @Given (usaremos 'admin' ya definido en tu clase)
     @Given("que el usuario se encuentra en la pantalla de login")
     public void que_el_usuario_se_encuentra_en_la_pantalla_de_login() {
-        admin = OnStage.theActorCalled("User"); // Creamos un nuevo Actor para el usuario ESS/Admin
+        admin = OnStage.theActorCalled("User");
         admin.wasAbleTo(
                 Open.url(getUrlBase())
         );
     }
 
-    // Este paso usa la Task 'LoginConCredenciales' que debe estar actualizada para recibir DataTable
     @When("ingresa las credenciales de acceso:")
     public void ingresa_las_credenciales_de_acceso(io.cucumber.datatable.DataTable dataTable) {
         admin.attemptsTo(
@@ -118,12 +111,9 @@ public class EmployeeLoginStepDefinitions {
         );
     }
 
-    // --- VALIDACIONES DE MENÚ (Necesita OpcionMenuEsVisible.java) ---
-
     @Then("la opción {string} NO debería aparecer en el menú lateral")
     public void la_opcion_no_deberia_aparecer_en_el_menu_lateral(String menuOption) {
         admin.should(
-                // Aquí es donde se usa OpcionMenuEsVisible
                 seeThat("la opción " + menuOption + " NO es visible",
                         OpcionMenuEsVisible.laOpcion(menuOption), is(false))
         );
@@ -132,12 +122,10 @@ public class EmployeeLoginStepDefinitions {
     @Then("la opción {string} DEBERÍA ser visible en el menú lateral")
     public void la_opcion_deberia_ser_visible_en_el_menu_lateral(String menuOption) {
         theActorInTheSpotlight().attemptsTo(
-                // Esperamos explícitamente a que el Target "Admin" sea visible antes de preguntar
                 WaitUntil.the(MenuLateral.OPCION_DE_MENU.of(menuOption), isVisible()).forNoMoreThan(5).seconds()
         );
 
         theActorInTheSpotlight().should(
-                // Ejecutamos la aserción
                 seeThat(OpcionMenuEsVisible.laOpcion(menuOption), is(true))
         );
     }

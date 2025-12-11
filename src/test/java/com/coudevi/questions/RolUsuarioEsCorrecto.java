@@ -23,7 +23,6 @@ public class RolUsuarioEsCorrecto implements Question<Boolean> {
 
     @Override
     public Boolean answeredBy(Actor actor) {
-        // Obtenemos el texto de la columna de Rol para ese Username específico
         String actualRole = Text.of(AdminUsersPage.USER_ROLE_IN_TABLE(username))
                 .answeredBy(actor);
 

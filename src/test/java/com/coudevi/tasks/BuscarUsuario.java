@@ -22,25 +22,18 @@ public class BuscarUsuario implements Task {
     @Override
     public <T extends Actor> void performAs(T actor) {
         actor.attemptsTo(
-                // 1. ESPERA INICIAL: Aumentamos a 15 segundos.
-                // A veces la página tarda en quitar el spinner inicial.
                 WaitUntil.the(AdminUsersPage.LOADING_SPINNER, isNotVisible())
                         .forNoMoreThan(15).seconds(),
 
-                // 2. Verificar que el input sea interactuable antes de tocarlo
                 WaitUntil.the(AdminUsersPage.USERNAME_SEARCH_INPUT, isClickable())
                         .forNoMoreThan(10).seconds(),
 
-                // 3. Limpiar y Escribir
                 Clear.field(AdminUsersPage.USERNAME_SEARCH_INPUT),
                 Enter.theValue(username).into(AdminUsersPage.USERNAME_SEARCH_INPUT),
 
-                // 4. Click en Buscar
                 WaitUntil.the(AdminUsersPage.SEARCH_BUTTON, isClickable()),
                 Click.on(AdminUsersPage.SEARCH_BUTTON),
 
-                // 5. ESPERA FINAL (CRÍTICA):
-                // Al dar clic en Buscar, el spinner vuelve a aparecer. Debemos esperar a que se vaya de nuevo.
                 WaitUntil.the(AdminUsersPage.LOADING_SPINNER, isNotVisible())
                         .forNoMoreThan(15).seconds()
         );

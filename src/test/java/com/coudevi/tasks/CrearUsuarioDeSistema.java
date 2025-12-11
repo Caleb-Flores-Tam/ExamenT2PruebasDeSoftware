@@ -37,22 +37,13 @@ public class CrearUsuarioDeSistema implements Task {
         String password = data.get("password");
 
         actor.attemptsTo(
-                // 1. Seleccionar Rol (Dropdown)
                 Click.on(AdminUsersPage.USER_ROLE_DROPDOWN),
                 Click.on(xpath("//*[contains(text(), '" + role + "')]")),
-
-                // 2. Ingresar Nombre de Empleado (Autocompletado)
                 Enter.theValue(employeeName).into(AdminUsersPage.EMPLOYEE_NAME_INPUT),
-
-                // Espera CRÍTICA y clic directo en la sugerencia
                 WaitUntil.the(AdminUsersPage.EMPLOYEE_SUGGESTION(employeeName), isClickable()).forNoMoreThan(10).seconds(),
                 Click.on(AdminUsersPage.EMPLOYEE_SUGGESTION(employeeName)),
-
-                // 3. Seleccionar Estado (Dropdown)
                 Click.on(AdminUsersPage.STATUS_DROPDOWN),
                 Click.on(xpath("//*[contains(text(), '" + status + "')]")),
-
-                // 4. Ingresar Username y Passwords
                 Enter.theValue(username).into(AdminUsersPage.USERNAME_INPUT),
                 Enter.theValue(password).into(AdminUsersPage.PASSWORD_INPUT),
                 Enter.theValue(password).into(AdminUsersPage.CONFIRM_PASSWORD_INPUT)
