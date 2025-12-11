@@ -13,6 +13,6 @@ Feature: Gestión de empleados en OrangeHRM
     When hace clic en el botón "Add" de empleados
     And registra un nuevo empleado con los datos:
       | firstName | middleName | lastName | employeeId |
-      | mario   | tito         | caceres  | 8888       |
+      | caleb    | flores     | tambracc | 7777       |
     And guarda el nuevo empleado
-    Then el empleado "mario" debería aparecer en la lista de empleados
+    Then el empleado "caleb" debería aparecer en la lista de empleados
