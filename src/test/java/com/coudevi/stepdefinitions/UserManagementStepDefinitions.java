@@ -102,14 +102,24 @@ public class UserManagementStepDefinitions {
     @And("guarda el usuario en el sistema")
     public void guardaElUsuarioEnElSistema() {
         theActorInTheSpotlight().attemptsTo(
+                // 1. Clic en Guardar
                 Click.on(AdminUsersPage.SAVE_BUTTON),
-                // Espera dinámica para que la lista cargue después del guardado
-                WaitUntil.the(AdminUsersPage.ADD_BUTTON, isClickable()).forNoMoreThan(10).seconds()
+
+                // 2. CORRECCIÓN: Esperar el mensaje de éxito en lugar del botón Add.
+                // Esto garantiza que el usuario se creó y evita errores si la página tarda en redirigir.
+                WaitUntil.the(AdminUsersPage.SUCCESS_MESSAGE, isVisible())
+                        .forNoMoreThan(10).seconds()
         );
     }
 
     @Then("el usuario {string} debería existir en la lista con el rol {string}")
     public void elUsuarioDeberiaExistirEnLaListaConElRol(String username, String expectedRole) {
+        // 1. PRIMERO: Buscamos al usuario para filtrar la tabla
+        theActorInTheSpotlight().attemptsTo(
+                BuscarUsuario.porUsername(username)
+        );
+
+        // 2. LUEGO: Verificamos. Ahora sí estará visible en la primera fila.
         theActorInTheSpotlight().should(
                 seeThat(RolUsuarioEsCorrecto.paraElUsuario(username, expectedRole), is(true))
         );

@@ -7,6 +7,10 @@ public class AdminUsersPage {
 
     // En com.coudevi.ui.AdminUsersPage
 
+    public static final Target ADD_BUTTON = Target.the("Boton Add")
+            .located(By.xpath("//button[normalize-space()='Add']"));
+
+    // Asegúrate de tener el mensaje de éxito definido (lo usamos en el paso siguiente)
     public static final Target SUCCESS_MESSAGE = Target.the("mensaje de éxito")
             .located(By.xpath("//div[contains(@class, 'oxd-toast')]"));
 
@@ -16,8 +20,10 @@ public class AdminUsersPage {
     // Nuevos Selectores para Búsqueda (Feature 5)
     public static final Target USERNAME_SEARCH_INPUT = Target.the("Input Username de busqueda")
             .located(By.xpath("//label[text()='Username']/parent::div/following-sibling::div/input"));
-    public static final Target SEARCH_BUTTON = Target.the("Boton Search").located(By.xpath("//button[@type='submit']"));
-
+    public static final Target SEARCH_BUTTON = Target.the("Boton Search")
+            .located(By.xpath("//button[@type='submit'][contains(.,'Search')]"));
+    public static final Target LOADING_SPINNER = Target.the("Spinner de carga")
+            .located(By.className("oxd-form-loader"));
     // Selector de Edición (Feature 5)
     public static final Target EDIT_ICON_BY_USERNAME(String username) {
         // Buscar el botón de edición en la fila del username dinámico
@@ -45,9 +51,6 @@ public class AdminUsersPage {
     // Selector para el sub-link 'Users' (que a menudo se abre debajo de User Management)
     public static final Target USERS_SUBMENU = Target.the("Sub-Menu Users").located(By.xpath("//a[text()='Users']"));
 
-
-    // Selector del botón para agregar
-    public static final Target ADD_BUTTON = Target.the("Boton Add").located(By.xpath("//button[text()=' Add ']"));
 
     // Selectores del formulario de creacion de usuario
     public static final Target USER_ROLE_DROPDOWN = Target.the("Dropdown User Role").located(By.xpath("(//div[@class='oxd-select-text-input'])[1]"));
