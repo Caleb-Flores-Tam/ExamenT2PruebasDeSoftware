@@ -15,6 +15,7 @@ import net.serenitybdd.screenplay.waits.WaitUntil;
 import static net.serenitybdd.screenplay.actors.OnStage.theActorInTheSpotlight;
 import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
 import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isClickable;
+import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isVisible;
 import static org.hamcrest.Matchers.is;
 
 public class UserManagementStepDefinitions {
@@ -38,7 +39,7 @@ public class UserManagementStepDefinitions {
     public void actualiza_el_rol_del_usuario_seleccionando(String newRole) {
         // Usamos el username consistente para la Task de Edición (caleb.adm o el que se usa en Feature 3)
         // **RECUERDA CORREGIR ESTE VALOR EN TU FEATURE 5 Y EN EL CÓDIGO SI ES NECESARIO**
-        String usernameDeEdicion = "caleb.idk";
+        String usernameDeEdicion = "caleb.lol";
 
         theActorInTheSpotlight().attemptsTo(
                 EditarRolDeUsuario.yCambiarRolA(usernameDeEdicion, newRole)
@@ -48,7 +49,13 @@ public class UserManagementStepDefinitions {
     @When("guarda los cambios del usuario")
     public void guarda_los_cambios_del_usuario() {
         theActorInTheSpotlight().attemptsTo(
-                Click.on(AdminUsersPage.SAVE_BUTTON)
+                // 1. Clic en guardar
+                Click.on(AdminUsersPage.BTN_SAVE_EDIT),
+
+                // 2. SOLUCIÓN: Esperar a que salga la tostada verde de éxito.
+                // Esto es mucho más seguro que esperar a que desaparezca el botón.
+                WaitUntil.the(AdminUsersPage.SUCCESS_MESSAGE, isVisible())
+                        .forNoMoreThan(10).seconds()
         );
     }
 

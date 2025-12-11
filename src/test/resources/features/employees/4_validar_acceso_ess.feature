@@ -12,6 +12,6 @@ Feature: Validar Permisos Limitados para Usuario ESS
   Scenario: Iniciar sesión con usuario ESS y verificar ausencia del menú Admin
     When ingresa las credenciales de acceso:
       | user     | password     |
-      | caleb.idk | clave123     |
+      | caleb.lol | clave123     |
     Then el Dashboard debería mostrarse correctamente
     And la opción "Admin" NO debería aparecer en el menú lateral

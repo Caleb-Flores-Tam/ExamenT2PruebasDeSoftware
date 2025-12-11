@@ -5,6 +5,14 @@ import org.openqa.selenium.By;
 
 public class AdminUsersPage {
 
+    // En com.coudevi.ui.AdminUsersPage
+
+    public static final Target SUCCESS_MESSAGE = Target.the("mensaje de éxito")
+            .located(By.xpath("//div[contains(@class, 'oxd-toast')]"));
+
+    public static final Target BTN_SAVE_EDIT = Target.the("botón guardar cambios de edición")
+            .located(By.cssSelector(".oxd-form-actions button[type='submit']"));
+
     // Nuevos Selectores para Búsqueda (Feature 5)
     public static final Target USERNAME_SEARCH_INPUT = Target.the("Input Username de busqueda")
             .located(By.xpath("//label[text()='Username']/parent::div/following-sibling::div/input"));
